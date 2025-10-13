@@ -4,8 +4,9 @@
 #include <iostream>
 #include <vector>
 
-class PmergeMe {
- public:
+class PmergeMe
+{
+public:
   // orthodox cannonical form
   PmergeMe();
   PmergeMe(const PmergeMe &src);
@@ -20,7 +21,13 @@ class PmergeMe {
   // function
   void run(int ac, char **av);
 
- private:
+  std::vector<std::pair<int, int>> pair1();
+  std::vector<std::pair<int, int>> pair2();
+
+  void sort_pair(std::vector<std::pair<int, int>> *in);
+
+private:
+  int _straggler;
   std::vector<int> _stack_1;
   std::deque<int> _stack_2;
 };

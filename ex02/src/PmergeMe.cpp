@@ -52,6 +52,55 @@ void PmergeMe::print(std::deque<int> stack) {
   }
 }
 
+// create pair
+std::vector<std::pair<int, int>> PmergeMe::pair1() {
+  std::vector<std::pair<int, int>> res;
+  std::vector<int>::iterator it = _stack_1.begin();
+  std::vector<int>::iterator ite = _stack_1.end();
+
+  while (it != ite) {
+    int first = *it++;
+    int second = (it != ite) ? *it++ : -1;
+
+    if (second == -1) {
+      _straggler = first;
+      break;
+    }
+    res.push_back(std::make_pair(first, second));
+  }
+  return res;
+}
+
+std::vector<std::pair<int, int>> PmergeMe::pair2() {
+  std::vector<std::pair<int, int>> res;
+  std::deque<int>::iterator it = _stack_2.begin();
+  std::deque<int>::iterator ite = _stack_2.end();
+
+  while (it != ite) {
+    int first = *it++;
+    int second = (it != ite) ? *it++ : -1;
+
+    if (second == -1) {
+      _straggler = first;
+      break;
+    }
+    res.push_back(std::make_pair(first, second));
+  }
+  return res;
+}
+
+// sort pair
+void PmergeMe::sort_pair(std::vector<std::pair<int, int>> *in) {
+  std::vector<std::pair<int , int>>::iterator it = in->begin();
+  std::vector<std::pair<int , int>>::iterator ite = in->end();
+
+  while(it != ite) {
+    if (it)
+    it++;
+  }
+}
+
+
 // function
 void PmergeMe::run(int ac, char **av) {
   std::vector<int> initial_thing;
@@ -62,17 +111,31 @@ void PmergeMe::run(int ac, char **av) {
     }
   }
 
-  // before
 
-  // vector
+  // display init vector
   this->_stack_1 = initial_thing;
   PmergeMe::print(this->_stack_1);
+  std::vector<std::pair<int, int>> pairs1 = this->pair1();
 
-  // deque
-  this->_stack_2 = initial_thing;
+  // display init deque
+  this->_stack_2.assign(initial_thing.begin(), initial_thing.end());
   PmergeMe::print(this->_stack_2);
+  std::vector<std::pair<int, int>> pairs2 = this->pair2();
 
-  // after
+  // display results
   PmergeMe::print(this->_stack_1);
   PmergeMe::print(this->_stack_2);
 }
+
+
+// steps
+//  pair by two 
+// sort pair min to max
+// order pair by big from low to high
+// extract big numbers and put them in a list
+// add the first tiny number
+// binary insertion 
+// display
+
+
+// need to create the jacobstal suit
