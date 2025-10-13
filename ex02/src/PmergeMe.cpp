@@ -84,58 +84,79 @@ std::vector<std::pair<int, int>> PmergeMe::pair2() {
       _straggler = first;
       break;
     }
-    res.push_back(std::make_pair(first, second));
+
+    if (first > second)
+      res.push_back(std::make_pair(first, second));
+    else
+      res.push_back(std::make_pair(second, first));
   }
   return res;
 }
 
 // sort pair
-void PmergeMe::sort_pair(std::vector<std::pair<int, int>> *in) {
-  std::vector<std::pair<int , int>>::iterator it = in->begin();
-  std::vector<std::pair<int , int>>::iterator ite = in->end();
-
-  while(it != ite) {
-    if (it)
-    it++;
+void PmergeMe::sort_pair(std::vector<std::pair<int, int>> &in) {
+  for (size_t i = 0; i < in.size(); i++) {
+    for (size_t j = i + 1; j < in.size(); j++) {
+      if (in[i].second > in[j].second) {
+        std::pair<int, int> temp = in[i];
+        in[i] = in[j];
+        in[j] = temp;
+      }
+    }
   }
 }
+
+// extract big
+std::vector<int> PmergeMe::extractBig(std::vector<std::pair<int, int>> &pair) {
+  std::vector<int> larger;
+  std::vector<std::pair<int, int>>::iterator it = pair.begin();
+  std::vector<std::pair<int, int>>::iterator ite = pair.end();
+
+  while (it != ite) {
+    larger.push_back(it->second);
+    it++;
+  }
+
+  return larger;
+}
+
 
 
 // function
 void PmergeMe::run(int ac, char **av) {
   std::vector<int> initial_thing;
-  for (size_t i = 0; i < ac; i++) {
+  for (size_t i = 1; i < ac; i++) {
     if (!isValidInt(av[i])) {
       std::cerr << "Error: Invalid input => \"" << av[i] << "\"" << std::endl;
       return;
     }
+    initial_thing.push_back(std::atoi(av[i]));
   }
 
-
-  // display init vector
+  // vector
   this->_stack_1 = initial_thing;
-  PmergeMe::print(this->_stack_1);
+  print(this->_stack_1);
   std::vector<std::pair<int, int>> pairs1 = this->pair1();
+  sort_pair(pairs1);
 
-  // display init deque
+  // deque
   this->_stack_2.assign(initial_thing.begin(), initial_thing.end());
-  PmergeMe::print(this->_stack_2);
+  print(this->_stack_2);
   std::vector<std::pair<int, int>> pairs2 = this->pair2();
+  sort_pair(pairs2);
 
   // display results
   PmergeMe::print(this->_stack_1);
   PmergeMe::print(this->_stack_2);
 }
 
-
 // steps
-//  pair by two 
+//  pair by two
 // sort pair min to max
 // order pair by big from low to high
 // extract big numbers and put them in a list
 // add the first tiny number
-// binary insertion 
+// binary insertion
 // display
-
 
 // need to create the jacobstal suit

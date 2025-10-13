@@ -24,7 +24,8 @@ public:
   std::vector<std::pair<int, int>> pair1();
   std::vector<std::pair<int, int>> pair2();
 
-  void sort_pair(std::vector<std::pair<int, int>> *in);
+  void sort_pair(std::vector<std::pair<int, int>> &in);
+  std::vector<int> extractBig(std::vector<std::pair<int, int>> &pair);
 
 private:
   int _straggler;
