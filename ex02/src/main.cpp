@@ -5,7 +5,11 @@ int main(int ac, char **av) {
     std::cerr << "Error: No input sequence provided." << std::endl;
     return 1;
   }
-  PmergeMe pmergeme;
+  PmergeMe<std::vector<int> > pmergeme;
   pmergeme.run(ac, av);
+
+  PmergeMe<std::deque<int> > pmergeme1;
+  pmergeme1.run(ac, av);
+
   return 0;
 }

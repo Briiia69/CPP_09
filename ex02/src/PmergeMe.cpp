@@ -6,15 +6,13 @@ PmergeMe::PmergeMe() {}
 
 PmergeMe::PmergeMe(const PmergeMe &src) {
   if (this != &src) {
-    _stack_1 = src._stack_1;
-    _stack_2 = src._stack_2;
+    _stack = src._stack;
   }
 }
 
 PmergeMe &PmergeMe::operator=(const PmergeMe &src) {
   if (this != &src) {
-    _stack_1 = src._stack_1;
-    _stack_2 = src._stack_2;
+    _stack = src._stack;
   }
   return *this;
 }
@@ -30,67 +28,6 @@ bool PmergeMe::isValidInt(const char *s) {
     if (!std::isdigit(s[i])) return false;
   }
   return true;
-}
-
-void PmergeMe::print(std::vector<int> stack) {
-  std::vector<int>::iterator it = stack.begin();
-  std::vector<int>::iterator ite = stack.end();
-
-  while (it != ite) {
-    std::cout << *it << std::endl;
-    it++;
-  }
-}
-
-void PmergeMe::print(std::deque<int> stack) {
-  std::deque<int>::iterator it = stack.begin();
-  std::deque<int>::iterator ite = stack.end();
-
-  while (it != ite) {
-    std::cout << *it << std::endl;
-    it++;
-  }
-}
-
-// create pair
-std::vector<std::pair<int, int>> PmergeMe::pair1() {
-  std::vector<std::pair<int, int>> res;
-  std::vector<int>::iterator it = _stack_1.begin();
-  std::vector<int>::iterator ite = _stack_1.end();
-
-  while (it != ite) {
-    int first = *it++;
-    int second = (it != ite) ? *it++ : -1;
-
-    if (second == -1) {
-      _straggler = first;
-      break;
-    }
-    res.push_back(std::make_pair(first, second));
-  }
-  return res;
-}
-
-std::vector<std::pair<int, int>> PmergeMe::pair2() {
-  std::vector<std::pair<int, int>> res;
-  std::deque<int>::iterator it = _stack_2.begin();
-  std::deque<int>::iterator ite = _stack_2.end();
-
-  while (it != ite) {
-    int first = *it++;
-    int second = (it != ite) ? *it++ : -1;
-
-    if (second == -1) {
-      _straggler = first;
-      break;
-    }
-
-    if (first > second)
-      res.push_back(std::make_pair(first, second));
-    else
-      res.push_back(std::make_pair(second, first));
-  }
-  return res;
 }
 
 // sort pair
@@ -121,12 +58,12 @@ std::vector<int> PmergeMe::extractBig(std::vector<std::pair<int, int>> &pair) {
 }
 
 // create main stack
-std::vector<int> PmergeMe::createMainStack(std::vector<int> &larger, std::vector<std::pair<int, int>> &pairs) {
+std::vector<int> PmergeMe::createMainStack(
+    std::vector<int> &larger, std::vector<std::pair<int, int>> &pairs) {
   std::vector<int> mainStack;
 
   larger.push_back(pairs.begin()->first);
-  for (size_t i = 0; i < larger.size(); i++)
-    mainStack.push_back(larger[i]);
+  for (size_t i = 0; i < larger.size(); i++) mainStack.push_back(larger[i]);
 
   return mainStack;
 }
@@ -147,40 +84,6 @@ std::vector<int> PmergeMe::generateJacobsthal(int n) {
   }
 
   return res;
-}
-
-// function
-void PmergeMe::run(int ac, char **av) {
-  std::vector<int> initial_thing;
-  for (size_t i = 1; i < ac; i++) {
-    if (!isValidInt(av[i])) {
-      std::cerr << "Error: Invalid input => \"" << av[i] << "\"" << std::endl;
-      return;
-    }
-    initial_thing.push_back(std::atoi(av[i]));
-  }
-
-  // vector
-  this->_stack_1 = initial_thing;
-  print(this->_stack_1);
-  std::vector<std::pair<int, int>> pairs1 = this->pair1();
-  sort_pair(pairs1);
-  std::vector<int> larger1 = extractBig(pairs1);
-  // need to sort large
-  std::vector<int> mainStack = createMainStack(larger1, pairs1);
-
-
-  // deque
-  this->_stack_2.assign(initial_thing.begin(), initial_thing.end());
-  print(this->_stack_2);
-  std::vector<std::pair<int, int>> pairs2 = this->pair2();
-  sort_pair(pairs2);
-  std::vector<int> larger2 = extractBig(pairs2);
-  std::vector<int> mainStack = createMainStack(larger2, pairs2);
-
-  // display results
-  PmergeMe::print(this->_stack_1);
-  PmergeMe::print(this->_stack_2);
 }
 
 // steps
