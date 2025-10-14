@@ -26,6 +26,8 @@ public:
 
   void sort_pair(std::vector<std::pair<int, int>> &in);
   std::vector<int> extractBig(std::vector<std::pair<int, int>> &pair);
+  std::vector<int> createMainStack(std::vector<int> &larger, std::vector<std::pair<int, int>> &pairs);
+  std::vector<int> generateJacobsthal(int n);
 
 private:
   int _straggler;

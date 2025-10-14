@@ -120,7 +120,34 @@ std::vector<int> PmergeMe::extractBig(std::vector<std::pair<int, int>> &pair) {
   return larger;
 }
 
+// create main stack
+std::vector<int> PmergeMe::createMainStack(std::vector<int> &larger, std::vector<std::pair<int, int>> &pairs) {
+  std::vector<int> mainStack;
 
+  larger.push_back(pairs.begin()->first);
+  for (size_t i = 0; i < larger.size(); i++)
+    mainStack.push_back(larger[i]);
+
+  return mainStack;
+}
+
+// merge insertion
+std::vector<int> PmergeMe::generateJacobsthal(int n) {
+  std::vector<int> res;
+
+  if (n <= 0) return res;
+  res.push_back(1);
+  if (n == 1) return res;
+  res.push_back(1);
+
+  for (size_t i = 0; i < n; i++) {
+    int num = res[i - 1] + 2 * res[i - 2];
+    if (num > n) break;
+    res.push_back(num);
+  }
+
+  return res;
+}
 
 // function
 void PmergeMe::run(int ac, char **av) {
@@ -138,12 +165,18 @@ void PmergeMe::run(int ac, char **av) {
   print(this->_stack_1);
   std::vector<std::pair<int, int>> pairs1 = this->pair1();
   sort_pair(pairs1);
+  std::vector<int> larger1 = extractBig(pairs1);
+  // need to sort large
+  std::vector<int> mainStack = createMainStack(larger1, pairs1);
+
 
   // deque
   this->_stack_2.assign(initial_thing.begin(), initial_thing.end());
   print(this->_stack_2);
   std::vector<std::pair<int, int>> pairs2 = this->pair2();
   sort_pair(pairs2);
+  std::vector<int> larger2 = extractBig(pairs2);
+  std::vector<int> mainStack = createMainStack(larger2, pairs2);
 
   // display results
   PmergeMe::print(this->_stack_1);
