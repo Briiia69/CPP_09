@@ -34,31 +34,6 @@ void PmergeMe::sort_pair(std::vector<std::pair<int, int>> &in) {
   }
 }
 
-// extract big
-std::vector<int> PmergeMe::extractBig(std::vector<std::pair<int, int>> &pair) {
-  std::vector<int> larger;
-  std::vector<std::pair<int, int>>::iterator it = pair.begin();
-  std::vector<std::pair<int, int>>::iterator ite = pair.end();
-
-  while (it != ite) {
-    larger.push_back(it->second);
-    it++;
-  }
-
-  return larger;
-}
-
-// create main stack
-std::vector<int> PmergeMe::createMainStack(
-    std::vector<int> &larger, std::vector<std::pair<int, int>> &pairs) {
-  std::vector<int> mainStack;
-
-  larger.push_back(pairs.begin()->first);
-  for (size_t i = 0; i < larger.size(); i++) mainStack.push_back(larger[i]);
-
-  return mainStack;
-}
-
 // merge insertion
 std::vector<int> PmergeMe::generateJacobsthal(int n) {
   std::vector<int> res;

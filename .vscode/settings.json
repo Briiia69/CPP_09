@@ -74,6 +74,10 @@
     "ios": "cpp",
     "locale": "cpp",
     "__locale": "cpp",
-    "print": "cpp"
+    "print": "cpp",
+    "__hash_table": "cpp",
+    "__tree": "cpp",
+    "queue": "cpp",
+    "stack": "cpp"
   }
 }
