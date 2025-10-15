@@ -4,7 +4,6 @@
 #include <iostream>
 #include <vector>
 
-template <typename T>
 class PmergeMe {
  public:
   // orthodox cannonical form
@@ -16,7 +15,7 @@ class PmergeMe {
   // helper
   bool isValidInt(const char *s);
 
-
+  template <typename T>
   void print(T stack) {
     T::iterator it = stack.begin();
     T::iterator ite = stack.end();
@@ -28,6 +27,24 @@ class PmergeMe {
   }
 
   // function
+
+  template <typename T>
+  void fordJohnson(T &small, T &larger) {
+    std::vector<std::pair<int, int>> pairs = createPair<T>(_stack, straggler);
+    sort_pair(pairs);
+
+    std::vector<int> larger = extractBig(pairs);
+    std::vector<int> mainStack = createMainStack(larger, pairs);
+
+   
+    if (larger.size() > 1)
+      fordJohnson(small, larger);
+    
+   // call jacob stal insertion of the small
+
+  }
+
+  template <typename T>
   void run(int ac, char **av) {
     int straggler = -1;
     T initial_thing;
@@ -41,19 +58,17 @@ class PmergeMe {
     }
 
     // vector
+    T _stack;
     _stack = initial_thing;
     print<T>(_stack);
 
-    std::vector<std::pair<int, int>> pairs = createPair<T>(_stack, straggler);
-    sort_pair(pairs);
-
-    std::vector<int> larger = extractBig(pairs);
-    std::vector<int> mainStack = createMainStack(larger, pairs);
+    fordJohnson()
 
     // display results
     print<T>(_stack);
   }
 
+  template <typename T>
   std::vector<std::pair<int, int> > createPair(T &stack, int &straggler) {
     std::vector<std::pair<int, int>> res;
     T::iterator it = stack.begin();
@@ -77,7 +92,4 @@ class PmergeMe {
   std::vector<int> createMainStack(std::vector<int> &larger,
                                    std::vector<std::pair<int, int> > &pairs);
   std::vector<int> generateJacobsthal(int n);
-
- private:
-  T _stack;
 };

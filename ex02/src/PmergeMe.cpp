@@ -4,22 +4,13 @@
 
 PmergeMe::PmergeMe() {}
 
-PmergeMe::PmergeMe(const PmergeMe &src) {
-  if (this != &src) {
-    _stack = src._stack;
-  }
-}
+PmergeMe::PmergeMe(const PmergeMe &src) {}
 
-PmergeMe &PmergeMe::operator=(const PmergeMe &src) {
-  if (this != &src) {
-    _stack = src._stack;
-  }
-  return *this;
-}
+PmergeMe &PmergeMe::operator=(const PmergeMe &src) { return *this; }
 
 PmergeMe::~PmergeMe() {}
 
-// helper
+// helper 
 bool PmergeMe::isValidInt(const char *s) {
   if (!s || *s == '|0') {
     return false;
@@ -86,13 +77,3 @@ std::vector<int> PmergeMe::generateJacobsthal(int n) {
   return res;
 }
 
-// steps
-//  pair by two
-// sort pair min to max
-// order pair by big from low to high
-// extract big numbers and put them in a list
-// add the first tiny number
-// binary insertion
-// display
-
-// need to create the jacobstal suit
