@@ -6,7 +6,8 @@ SRCDIR = src
 INCDIR = include
 LIBDIR = lib
 
-SOURCES = $(SRCDIR)/main.cpp
+SOURCES = $(SRCDIR)/main.cpp \
+			$(SRCDIR)/PmergeMe.cpp
 
 OBJECTS = $(SOURCES:.cpp=.o)
 

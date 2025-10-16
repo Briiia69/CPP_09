@@ -3,6 +3,7 @@
 #include <deque>
 #include <iostream>
 #include <vector>
+#include <cstdlib>
 
 class PmergeMe {
  public:
@@ -80,41 +81,72 @@ class PmergeMe {
 
   // binary insertion using jacobsthal suit
   template <typename T>
-  void insertPending(T &mainStack, T &small, T &larger, int &straggler) {
-    std::vector<int> jacobSthal =
-        generateJacobsthal(small.size());  // temp value need to change it
+  void jacobsthalInsertion(T &small, T &larger) {
+    if (small.size() == 0) return ;
+
+    size_t n = small.size(); // size of the small contrainer
+    std::vector<int> jacobs = generateJacobsthal(n);
+    std::vector<bool> inserted(n, false); // vecotr checking if index is inserted
+    int value = -1;
+
+    // insert jacobs idexing
+    for (size_t i = 0; i < n; i++) {
+      size_t idx = jacobs[i] - 1;
+      if (idx < n && !inserted[idx]) {
+        // insert the num in the larger
+        value = small[idx];
+        typename T::iterator pos = std::lower_bound(larger.begin(), larger.end(), value);
+        larger.insert(pos, small[idx]);
+        inserted[i] = true;
+      }
+    }
+    
+    // insert none inserted numbers
+    for (size_t i = 0; i < n; i++) {
+      if (!inserted[i]) {
+        value = small[i];
+        typename T::iterator pos = std::lower_bound(larger.begin(), larger.end(), value);
+        larger.insert(pos, small[i]);
+        inserted[i] = true;
+      }
+    }
   }
 
   // perform fordJohnson algorithme
   template <typename T>
-  void fordJohnson(T &_stack, T &mainStack, T &small, T &larger) {
+  void fordJohnson(T &stack) {
 
-    std::vector<std::pair<int, int> > pairs;
     int straggler = -1;
-    if (larger.size() == 0)
-      pairs = createPair<T>(_stack, straggler);
-    else
-      pairs = createPair<T>(larger, straggler);
-
+    std::vector<std::pair<int, int> > pairs = createPair(stack, straggler);
+    
     sort_pair(pairs);
 
-    larger = extractBig<T>(pairs);
-    small = extractSmall<T>(pairs);
+    T larger = extractBig<T>(pairs);
+    T small = extractSmall<T>(pairs);
 
-    if (larger.size() > 1) fordJohnson(_stack, mainStack, small, larger);
+    if (larger.size() > 1) {
+      T temp;
+      temp.assign(larger.begin(), larger.end());
+      fordJohnson(temp);
+      stack.assign(temp.begin(), temp.end());
+    }
 
-    if (larger.size() == 1) mainStack.push_back(*larger);
+    jacobsthalInsertion<T>(small, larger);
 
-    insertPending(mainStack, small, larger, straggler);
+    if (straggler != -1) {
+      typename T::iterator pos = std::lower_bound(larger.begin(), larger.end(), straggler);
+      larger.insert(pos, straggler);
+    }
+   
+    stack.assign(larger.begin(), larger.end());
   }
 
   // generate the jacobsthal suit for n
-  std::vector<int> generateJacobsthal(int n);
+  std::vector<int> generateJacobsthal(size_t n);
 
   // initialise and launch algo
   template <typename T>
   void run(int ac, char **av) {
-    int straggler = -1;
     T initial_thing;
 
     for (size_t i = 1; i < static_cast<size_t>(ac); i++) {
@@ -122,19 +154,20 @@ class PmergeMe {
         std::cerr << "Error: Invalid input => \"" << av[i] << "\"" << std::endl;
         return;
       }
-      initial_thing.push_back(std::atoi(av[i]));
+      initial_thing.push_back(std::atol(av[i]));
     }
 
     // vector
-    T _stack;
-    _stack = initial_thing;
-    T larger, small;
-    print<T>(_stack);
+    T stack;
+    stack = initial_thing;
+    std::cout << "before: " << std::endl;
+    print<T>(stack);
 
     T mainStack;
-    fordJohnson(_stack, mainStack, larger, small);  // launch recursion
+    fordJohnson(stack);  // launch recursion
 
     // display results
-    print<T>(_stack);
+    std::cout << "after: " << std::endl;
+    print<T>(stack);
   }
 };

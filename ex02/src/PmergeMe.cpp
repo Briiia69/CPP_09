@@ -4,15 +4,20 @@
 
 PmergeMe::PmergeMe() {}
 
-PmergeMe::PmergeMe(const PmergeMe &src) {}
+PmergeMe::PmergeMe(const PmergeMe &src) {
+  (void)src;
+}
 
-PmergeMe &PmergeMe::operator=(const PmergeMe &src) { return *this; }
+PmergeMe &PmergeMe::operator=(const PmergeMe &src) { 
+  (void)src;
+  return *this;
+}
 
 PmergeMe::~PmergeMe() {}
 
 // helper 
 bool PmergeMe::isValidInt(const char *s) {
-  if (!s || *s == '|0') {
+  if (!s || *s == '\0') {
     return false;
   }
   for (size_t i = 0; s[i]; i++) {
@@ -22,7 +27,7 @@ bool PmergeMe::isValidInt(const char *s) {
 }
 
 // sort pair
-void PmergeMe::sort_pair(std::vector<std::pair<int, int>> &in) {
+void PmergeMe::sort_pair(std::vector<std::pair<int, int> > &in) {
   for (size_t i = 0; i < in.size(); i++) {
     for (size_t j = i + 1; j < in.size(); j++) {
       if (in[i].second > in[j].second) {
@@ -35,7 +40,7 @@ void PmergeMe::sort_pair(std::vector<std::pair<int, int>> &in) {
 }
 
 // merge insertion
-std::vector<int> PmergeMe::generateJacobsthal(int n) {
+std::vector<int> PmergeMe::generateJacobsthal(size_t n) {
   std::vector<int> res;
 
   if (n <= 0) return res;
@@ -44,7 +49,7 @@ std::vector<int> PmergeMe::generateJacobsthal(int n) {
   res.push_back(1);
 
   for (size_t i = 0; i < n; i++) {
-    int num = res[i - 1] + 2 * res[i - 2];
+    size_t num = res[i - 1] + 2 * res[i - 2];
     if (num > n) break;
     res.push_back(num);
   }
