@@ -4,7 +4,8 @@
 #include <iostream>
 #include <vector>
 #include <cstdlib>
-#include <ctime> 
+#include <ctime>
+#include <typeinfo>
 
 class PmergeMe {
  public:
@@ -18,13 +19,43 @@ class PmergeMe {
   bool isValidInt(const char *s);
 
   template <typename T>
-  void print(T stack) {
-    typename T::iterator it = stack.begin();
-    typename T::iterator ite = stack.end();
+  void print(T stack, T initial_thing) {
+    {
+      typename T::iterator it = initial_thing.begin();
+      typename T::iterator ite = initial_thing.end();
+      std::cout << "Before: ";
+      if (initial_thing.size() > 5) {
+        for (size_t i = 0; i < 5; i++) {
+          std::cout << initial_thing[i] << " ";
+        }
+        std::cout << " [..]";
+      }
+      else {
+        while (it != ite) {
+          std::cout << *it << " ";
+          it++;
+        }
+      }
+      std::cout << std::endl;
+    }
 
-    while (it != ite) {
-      std::cout << *it << std::endl;
-      it++;
+    {
+      typename T::iterator it = stack.begin();
+      typename T::iterator ite = stack.end();
+      std::cout << "After: ";
+      if (stack.size() > 5) {
+        for (size_t i = 0; i < 5; i++) {
+          std::cout << stack[i] << " ";
+        }
+        std::cout << " [..]";
+      }
+      else {
+        while (it != ite) {
+          std::cout << *it << " ";
+          it++;
+        }
+      }
+      std::cout << std::endl;
     }
   }
 
@@ -147,7 +178,7 @@ class PmergeMe {
 
   // initialise and launch algo
   template <typename T>
-  void run(int ac, char **av) {
+  void run(int ac, char **av, std::string type, bool list) {
     T initial_thing;
 
     for (size_t i = 1; i < static_cast<size_t>(ac); i++) {
@@ -161,19 +192,18 @@ class PmergeMe {
     // vector
     T stack;
     stack = initial_thing;
-    std::cout << "before: " << std::endl;
-    print<T>(stack);
-
+  
     clock_t start = clock();
+
     T mainStack;
     fordJohnson(stack);  // launch recursion
-    clock_t end = clock();
 
+    clock_t end = clock();
     double time = static_cast<double>(end - start) / CLOCKS_PER_SEC * 1e6;
 
     // display results
-    std::cout << "after: " << std::endl;
-    print<T>(stack);
-    std::cout << "Time takem: " << time << std::endl;
+    if (list == true) print<T>(stack, initial_thing);
+
+    std::cout << "Time to process a range of " << stack.size() << " element with " << type << " : " << time << " µs" << std::endl;
   }
 };

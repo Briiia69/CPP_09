@@ -6,13 +6,11 @@ int main(int ac, char **av) {
     return 1;
   }
 
-  std::cout << "vector: " << std::endl;
   PmergeMe pmergeme;
-  pmergeme.run<std::vector<int> >(ac, av);
+  pmergeme.run<std::vector<int> >(ac, av, "std::vector<int>", true);
 
-    std::cout << "deque: " << std::endl;
   PmergeMe pmergeme1;
-  pmergeme1.run<std::deque<int> >(ac, av);
+  pmergeme1.run<std::deque<int> >(ac, av, "std::deque<int>", false);
 
   return 0;
 }
