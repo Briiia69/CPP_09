@@ -24,17 +24,9 @@ class PmergeMe {
       typename T::iterator it = initial_thing.begin();
       typename T::iterator ite = initial_thing.end();
       std::cout << "Before: ";
-      if (initial_thing.size() > 5) {
-        for (size_t i = 0; i < 5; i++) {
-          std::cout << initial_thing[i] << " ";
-        }
-        std::cout << " [..]";
-      }
-      else {
-        while (it != ite) {
-          std::cout << *it << " ";
-          it++;
-        }
+      while (it != ite) {
+        std::cout << *it << " ";
+        it++;
       }
       std::cout << std::endl;
     }
@@ -43,17 +35,9 @@ class PmergeMe {
       typename T::iterator it = stack.begin();
       typename T::iterator ite = stack.end();
       std::cout << "After: ";
-      if (stack.size() > 5) {
-        for (size_t i = 0; i < 5; i++) {
-          std::cout << stack[i] << " ";
-        }
-        std::cout << " [..]";
-      }
-      else {
-        while (it != ite) {
-          std::cout << *it << " ";
-          it++;
-        }
+      while (it != ite) {
+        std::cout << *it << " ";
+        it++;
       }
       std::cout << std::endl;
     }
@@ -199,7 +183,7 @@ class PmergeMe {
     fordJohnson(stack);  // launch recursion
 
     clock_t end = clock();
-    double time = static_cast<double>(end - start) / CLOCKS_PER_SEC * 1e6;
+    double time = static_cast<double>(end - start) / CLOCKS_PER_SEC * 1000000.0;
 
     // display results
     if (list == true) print<T>(stack, initial_thing);
