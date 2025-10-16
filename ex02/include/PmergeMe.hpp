@@ -4,6 +4,7 @@
 #include <iostream>
 #include <vector>
 #include <cstdlib>
+#include <ctime> 
 
 class PmergeMe {
  public:
@@ -163,11 +164,16 @@ class PmergeMe {
     std::cout << "before: " << std::endl;
     print<T>(stack);
 
+    clock_t start = clock();
     T mainStack;
     fordJohnson(stack);  // launch recursion
+    clock_t end = clock();
+
+    double time = static_cast<double>(end - start) / CLOCKS_PER_SEC * 1e6;
 
     // display results
     std::cout << "after: " << std::endl;
     print<T>(stack);
+    std::cout << "Time takem: " << time << std::endl;
   }
 };
