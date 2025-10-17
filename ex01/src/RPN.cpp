@@ -26,7 +26,7 @@ RPN::RPN(const std::string &line) {
     std::string token;
 
   while (iss >> token) {
-  
+    
     if (token.length() == 1 &&
         std::string("+-*/").find(token[0]) != std::string::npos) {
       if (_storage.size() < 2)
@@ -55,17 +55,15 @@ RPN::RPN(const std::string &line) {
           _storage.push(left / right);
           break;
       }
-      show(token[0]);
+      // show(token[0]); DEBUG option to see all opreations
     } else {
       std::istringstream iss(token);
       int num;
-
       if (!(iss >> num) || !iss.eof()){
-        std::cout << "error: " << token[0] << std::endl;
         throw std::runtime_error("Error: Invalid token");}
       else
         _storage.push(num);
-      show(token[0]);
+      // show(token[0]);
     }
   }
 
