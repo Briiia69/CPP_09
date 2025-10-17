@@ -184,11 +184,11 @@ class PmergeMe {
     fordJohnson(stack);  // launch recursion
 
     clock_t end = clock();
-    double time = static_cast<double>(end - start) / CLOCKS_PER_SEC;
+    double time = static_cast<double>(end - start) / CLOCKS_PER_SEC * 1000000;
 
     // display results
     if (list == true) print<T>(stack, initial_thing);
 
-    std::cout << std::fixed << std::setprecision(20) << "Time to process a range of " << stack.size() << " element with " << type << " : " << time << " µs" << std::endl;
+    std::cout << std::fixed << std::setprecision(5) << "Time to process a range of " << stack.size() << " element with " << type << " : " << time << " µs" << std::endl;
   }
 };

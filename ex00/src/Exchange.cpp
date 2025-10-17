@@ -61,14 +61,32 @@ void Exchange::complete(const std::string &file) const {
     } else if (!check_date(date)) {
       std::cout << "Error: bad input => " << date << std::endl;
     } else {
+
+      // find the date or close enough
       std::map<std::string, float>::const_iterator record_value =
           _records.lower_bound(date);
+
+      // go to lower ones only for non perfect match
+      if (record_value == _records.end()) { // if the date is out of bound
+        if (!_records.empty()) 
+          record_value--; // got to the last one in db
+        else {
+          std::cout << "Error: no records available." << std::endl;
+          continue;
+        }
+      } else if (record_value->first != date && record_value != _records.begin()) { // if a "match" is found but not equal we use the closest lowest
+        --record_value;
+      } else if (record_value->first != date && record_value == _records.begin()) { // if it goes lower than our starting date if it's a percfect match we use it otherwise send error
+        std::cout << "Error: no earlier record for date " << date << std::endl;
+        continue;
+      } 
+
+      // display
       float num = std::atof(unit.c_str());
       if (check_value(num)) {
-        while (record_value->first > date) --record_value;
         std::cout << record_value->first << " => " << num << " = "
                   << record_value->second * num << std::endl;
-      }
+      } 
     }
   }
   fin.close();
