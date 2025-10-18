@@ -1,13 +1,13 @@
 #pragma once
 
-#include <deque>
-#include <iostream>
-#include <vector>
 #include <cstdlib>
 #include <ctime>
-#include <typeinfo>
+#include <deque>
 #include <iomanip>
+#include <iostream>
 #include <limits>
+#include <typeinfo>
+#include <vector>
 
 class PmergeMe {
  public:
@@ -100,11 +100,12 @@ class PmergeMe {
   // binary insertion using jacobsthal suit
   template <typename T>
   void jacobsthalInsertion(T &small, T &larger) {
-    if (small.size() == 0) return ;
+    if (small.size() == 0) return;
 
-    size_t n = small.size(); // size of the small contrainer
+    size_t n = small.size();  // size of the small contrainer
     std::vector<int> jacobs = generateJacobsthal(n);
-    std::vector<bool> inserted(n, false); // vecotr checking if index is inserted
+    std::vector<bool> inserted(n,
+                               false);  // vecotr checking if index is inserted
     int value = -1;
 
     // insert jacobs idexing
@@ -113,17 +114,19 @@ class PmergeMe {
       if (idx < n && !inserted[idx]) {
         // insert the num in the larger
         value = small[idx];
-        typename T::iterator pos = std::lower_bound(larger.begin(), larger.end(), value);
+        typename T::iterator pos =
+            std::lower_bound(larger.begin(), larger.end(), value);
         larger.insert(pos, small[idx]);
-        inserted[i] = true;
+        inserted[idx] = true;
       }
     }
-    
+
     // insert none inserted numbers
     for (size_t i = 0; i < n; i++) {
       if (!inserted[i]) {
         value = small[i];
-        typename T::iterator pos = std::lower_bound(larger.begin(), larger.end(), value);
+        typename T::iterator pos =
+            std::lower_bound(larger.begin(), larger.end(), value);
         larger.insert(pos, small[i]);
         inserted[i] = true;
       }
@@ -133,10 +136,9 @@ class PmergeMe {
   // perform fordJohnson algorithme
   template <typename T>
   void fordJohnson(T &stack) {
-
     int straggler = -1;
     std::vector<std::pair<int, int> > pairs = createPair(stack, straggler);
-    
+
     sort_pair(pairs);
 
     T larger = extractBig<T>(pairs);
@@ -146,16 +148,17 @@ class PmergeMe {
       T temp;
       temp.assign(larger.begin(), larger.end());
       fordJohnson(temp);
-      stack.assign(temp.begin(), temp.end());
+      larger.assign(temp.begin(), temp.end());
     }
 
     jacobsthalInsertion<T>(small, larger);
 
     if (straggler != -1) {
-      typename T::iterator pos = std::lower_bound(larger.begin(), larger.end(), straggler);
+      typename T::iterator pos =
+          std::lower_bound(larger.begin(), larger.end(), straggler);
       larger.insert(pos, straggler);
     }
-   
+
     stack.assign(larger.begin(), larger.end());
   }
 
@@ -185,7 +188,7 @@ class PmergeMe {
     // vector
     T stack;
     stack = initial_thing;
-  
+
     clock_t start = clock();
 
     T mainStack;
@@ -197,6 +200,9 @@ class PmergeMe {
     // display results
     if (list == true) print<T>(stack, initial_thing);
 
-    std::cout << std::fixed << std::setprecision(5) << "Time to process a range of " << stack.size() << " element with " << type << " : " << time << " µs" << std::endl;
+    std::cout << std::fixed << std::setprecision(5)
+              << "Time to process a range of " << stack.size()
+              << " element with " << type << " : " << time << " µs"
+              << std::endl;
   }
 };
