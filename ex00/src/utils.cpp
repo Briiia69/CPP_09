@@ -5,24 +5,27 @@ bool check_date(const std::string line) {
   int year, month, day;
 
   size_t ypos = line.find('-');
-  if (ypos == std::string::npos)
-    return false;
+  if (ypos == std::string::npos) return false;
   size_t mpos = line.find('-', ypos);
-  if (mpos == std::string::npos)
-    return false;
-  if (line.length() - mpos < 1)
-    return false;
-  if (!line[ypos + 1] || !line[mpos + 1])
-    return false;
+  if (mpos == std::string::npos) return false;
+  if (line.length() - mpos < 1) return false;
+  if (!line[ypos + 1] || !line[mpos + 1]) return false;
 
   year = std::atoi(line.substr(0, ypos).c_str());
-  month = std::atoi(line.substr(ypos + 1, mpos).c_str());
-  day = std::atoi(line.substr(mpos + 1, line.length() - mpos).c_str());
- 
-  
+  month = std::atoi(line.substr(ypos + 1, mpos - ypos - 1).c_str());
+  day = std::atoi(line.substr(mpos + 1).c_str());
+
+  int maxDay = months[month - 1];
+
+    if (month == 2) {
+    bool isLeap = (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
+    if (isLeap) maxDay = 29;
+  }
+
   if (month < 1 || month > 12) return false;
-  if (day < 1 || months[month - 1] < day) return false;
-  
+  if (day < 1 || maxDay < day) return false;
+  if (year < 0) return false;
+
   return true;
 }
 

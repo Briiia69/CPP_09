@@ -10,6 +10,8 @@ int main(int ac, char **av) {
       std::cerr << e.what() << std::endl;
       return 1;
     }
+  } else {
+    std::cerr << "Usage: ./btc <input file>" << std::endl;
   }
   return 0;
 }

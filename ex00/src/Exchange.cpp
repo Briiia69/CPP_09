@@ -82,6 +82,12 @@ void Exchange::complete(const std::string &file) const {
       } 
 
       // display
+      for (size_t i = 0; unit[i]; i++) {
+        if ((unit[i] > '9' || unit[i] < '0') || unit[i] != '.') {
+          std::cout << "Error: the value is not didgits" << std::endl;
+          continue;
+        }
+      }
       float num = std::atof(unit.c_str());
       if (check_value(num)) {
         std::cout << record_value->first << " => " << num << " = "

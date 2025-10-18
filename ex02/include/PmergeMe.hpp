@@ -7,6 +7,7 @@
 #include <ctime>
 #include <typeinfo>
 #include <iomanip>
+#include <limits>
 
 class PmergeMe {
  public:
@@ -168,6 +169,13 @@ class PmergeMe {
 
     for (size_t i = 1; i < static_cast<size_t>(ac); i++) {
       if (!isValidInt(av[i])) {
+        std::cerr << "Error: Invalid input => \"" << av[i] << "\"" << std::endl;
+        return;
+      }
+
+      // check int overflow underflow
+      long num = std::atol(av[i]);
+      if (num > std::numeric_limits<int>::max() || num < 0) {
         std::cerr << "Error: Invalid input => \"" << av[i] << "\"" << std::endl;
         return;
       }

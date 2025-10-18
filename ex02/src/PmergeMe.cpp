@@ -48,7 +48,7 @@ std::vector<int> PmergeMe::generateJacobsthal(size_t n) {
   if (n == 1) return res;
   res.push_back(1);
 
-  for (size_t i = 0; i < n; i++) {
+  for (size_t i = 2; i < n; i++) {
     size_t num = res[i - 1] + 2 * res[i - 2];
     if (num > n) break;
     res.push_back(num);
