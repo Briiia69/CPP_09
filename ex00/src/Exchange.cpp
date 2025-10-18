@@ -37,7 +37,6 @@ Exchange::Exchange(std::string data_path) {
 }
 
 // function
-
 void Exchange::complete(const std::string &file) const {
   std::ifstream fin;
   std::string line, date, unit;
@@ -56,43 +55,49 @@ void Exchange::complete(const std::string &file) const {
     std::getline(iss, date, '|');
     std::getline(iss, unit);
 
+    // Trim whitespace from date and unit
+    date = trim(date);
+    unit = trim(unit);
+
     if (unit.empty()) {
       std::cout << "Error: bad input => " << date << std::endl;
     } else if (!check_date(date)) {
       std::cout << "Error: bad input => " << date << std::endl;
+    } else if (!isValidNumber(unit)) {
+      std::cout << "Error: bad input => " << date << std::endl;
     } else {
-
       // find the date or close enough
       std::map<std::string, float>::const_iterator record_value =
           _records.lower_bound(date);
 
       // go to lower ones only for non perfect match
-      if (record_value == _records.end()) { // if the date is out of bound
-        if (!_records.empty()) 
-          record_value--; // got to the last one in db
+      if (record_value == _records.end()) {  // if the date is out of bound
+        if (!_records.empty())
+          record_value--;  // got to the last one in db
         else {
           std::cout << "Error: no records available." << std::endl;
           continue;
         }
-      } else if (record_value->first != date && record_value != _records.begin()) { // if a "match" is found but not equal we use the closest lowest
+      } else if (record_value->first != date &&
+                 record_value !=
+                     _records.begin()) {  // if a "match" is found but not equal
+                                          // we use the closest lowest
         --record_value;
-      } else if (record_value->first != date && record_value == _records.begin()) { // if it goes lower than our starting date if it's a percfect match we use it otherwise send error
+      } else if (record_value->first != date &&
+                 record_value ==
+                     _records.begin()) {  // if it goes lower than our starting
+                                          // date if it's a percfect match we
+                                          // use it otherwise send error
         std::cout << "Error: no earlier record for date " << date << std::endl;
         continue;
-      } 
+      }
 
       // display
-      for (size_t i = 0; unit[i]; i++) {
-        if ((unit[i] > '9' || unit[i] < '0') || unit[i] != '.') {
-          std::cout << "Error: the value is not didgits" << std::endl;
-          continue;
-        }
-      }
       float num = std::atof(unit.c_str());
       if (check_value(num)) {
         std::cout << record_value->first << " => " << num << " = "
                   << record_value->second * num << std::endl;
-      } 
+      }
     }
   }
   fin.close();
